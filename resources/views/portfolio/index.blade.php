@@ -19,10 +19,10 @@
                 }
             }">
                 {{-- Filter buttons --}}
-                <div class="flex flex-wrap gap-2 justify-center mb-10">
+                <div class="flex flex-wrap gap-4 text-[var(--muted)] text-sm">
                     <template x-for="f in filters" :key="f">
                         <button @click="activeFilter = f"
-                            :class="activeFilter === f ? 'bg-neon-cyan text-dark-900 border-neon-cyan' : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'"
+                            :class="activeFilter === f ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]' : 'border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--text)]'"
                             class="px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200"
                             x-text="f"></button>
                     </template>
@@ -34,7 +34,7 @@
                         <a :href="`/portfolio/${project.slug}`"
                             class="group glass glass-hover rounded-xl overflow-hidden block">
                             <div
-                                class="h-48 bg-gradient-to-br from-neon-cyan/10 via-neon-violet/10 to-neon-emerald/10 flex items-center justify-center">
+                                class="h-48 bg-gradient-to-br from-[var(--primary)]/10 via-[var(--secondary)]/10 to-[var(--success)]/10 flex items-center justify-center">
                                 <span class="text-6xl" x-text="project.cover_image || '🖥️'"></span>
                             </div>
                             <div class="p-5">
@@ -43,16 +43,17 @@
                                         <span class="badge badge-cyan" x-text="tag"></span>
                                     </template>
                                 </div>
-                                <h3 class="font-bold text-white group-hover:text-neon-cyan transition-colors mb-1"
+                                <h3 class="font-bold text-[var(--heading)] group-hover:text-[var(--primary)] transition-colors mb-1"
                                     x-text="project.title"></h3>
-                                <p class="text-slate-400 text-xs" x-text="`${project.client} · ${project.year}`"></p>
+                                <p class="text-[var(--muted)] text-xs" x-text="`${project.client} · ${project.year}`">
+                                </p>
                             </div>
                         </a>
                     </template>
                 </div>
 
                 {{-- Empty state --}}
-                <div x-show="filtered.length === 0" class="text-center py-16 text-slate-400">
+                <div x-show="filtered.length === 0" class="text-center py-16 text-[var(--muted)]">
                     <div class="text-5xl mb-4">🔍</div>
                     <p>Aucun projet dans cette catégorie pour le moment.</p>
                 </div>

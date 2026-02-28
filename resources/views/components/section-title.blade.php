@@ -6,9 +6,9 @@
     </div>
     @endif
     @if($title)
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">{{ $title }}</h2>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--heading)] mb-4 leading-tight">{{ $title }}</h2>
     @endif
     @if($slot->isNotEmpty())
-    <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">{{ $slot }}</p>
+    <p class="text-[var(--muted)] text-lg max-w-2xl mx-auto leading-relaxed">{{ $slot }}</p>
     @endif
 </div>

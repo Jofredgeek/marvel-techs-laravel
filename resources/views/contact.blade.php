@@ -5,7 +5,7 @@
             <div class="text-center mb-14">
                 <x-badge color="cyan" class="mb-4">Contact</x-badge>
                 <h1 class="text-4xl font-extrabold text-white mb-4 mt-4">Parlons de votre projet</h1>
-                <p class="text-slate-400 text-lg">Audit gratuit de 15 min · Réponse sous 24h · Sans engagement</p>
+                <p class="text-[var(--muted)] text-lg">Audit gratuit de 15 min · Réponse sous 24h · Sans engagement</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -33,7 +33,7 @@
                         <x-input name="phone" type="tel" label="Téléphone (optionnel)" placeholder="+237 6XX XXX XXX" />
 
                         <div>
-                            <label for="service" class="block text-sm font-medium text-slate-300 mb-1.5">
+                            <label for="service" class="block text-sm font-medium text-[var(--muted)] mb-1.5">
                                 Service concerné <span class="text-neon-rose">*</span>
                             </label>
                             <select name="service" id="service" required class="form-input">
@@ -55,7 +55,7 @@
                         </div>
 
                         <div>
-                            <label for="budget" class="block text-sm font-medium text-slate-300 mb-1.5">Budget
+                            <label for="budget" class="block text-sm font-medium text-[var(--muted)] mb-1.5">Budget
                                 estimé</label>
                             <select name="budget" id="budget" class="form-input">
                                 <option value="">— Sélectionner —</option>
@@ -90,9 +90,10 @@
                     <div class="glass rounded-xl p-4 flex items-start gap-3">
                         <span class="text-2xl">{{ $icon }}</span>
                         <div>
-                            <div class="text-xs text-slate-500 uppercase tracking-wider">{{ $label }}</div>
+                            <div class="text-xs text-[var(--muted)] opacity-60 uppercase tracking-wider">{{ $label }}
+                            </div>
                             <div class="text-white font-medium text-sm">{{ $value }}</div>
-                            <div class="text-slate-400 text-xs">{{ $note }}</div>
+                            <div class="text-[var(--muted)] text-xs">{{ $note }}</div>
                         </div>
                     </div>
                     @endforeach
@@ -102,7 +103,8 @@
                             <span class="w-2 h-2 rounded-full bg-neon-emerald animate-pulse"></span>
                             <span class="text-neon-emerald text-sm font-semibold">Disponible maintenant</span>
                         </div>
-                        <p class="text-slate-400 text-xs">Notre équipe est disponible pour répondre à vos questions.</p>
+                        <p class="text-[var(--muted)] text-xs">Notre équipe est disponible pour répondre à vos
+                            questions.</p>
                     </div>
                 </div>
             </div>

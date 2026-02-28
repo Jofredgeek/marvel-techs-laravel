@@ -1,16 +1,16 @@
-<footer class="border-t border-slate-800/60 bg-[#080c16]" aria-label="Pied de page">
+<footer class="border-t border-[var(--border)] bg-[var(--surface-2)]" aria-label="Pied de page">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
             {{-- Brand --}}
             <div>
                 <div class="text-xl font-extrabold text-gradient-cyan mb-3">Marvel Tech's</div>
-                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                <p class="text-[var(--muted)] text-sm leading-relaxed mb-4">
                     Solutions IT modernes pour entreprises et particuliers. Réseaux, cloud, cybersécurité, développement
                     web et support informatique.
                 </p>
                 <div class="flex gap-3 mt-4">
                     <a href="#"
-                        class="w-9 h-9 rounded-lg border border-slate-700 flex items-center justify-center text-slate-400 hover:text-neon-cyan hover:border-neon-cyan/40 transition-all"
+                        class="w-9 h-9 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--primary)] hover:border-[var(--primary)] transition-all"
                         aria-label="LinkedIn">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -18,7 +18,7 @@
                         </svg>
                     </a>
                     <a href="#"
-                        class="w-9 h-9 rounded-lg border border-slate-700 flex items-center justify-center text-slate-400 hover:text-neon-cyan hover:border-neon-cyan/40 transition-all"
+                        class="w-9 h-9 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--primary)] hover:border-[var(--primary)] transition-all"
                         aria-label="Twitter/X">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -26,7 +26,7 @@
                         </svg>
                     </a>
                     <a href="#"
-                        class="w-9 h-9 rounded-lg border border-slate-700 flex items-center justify-center text-slate-400 hover:text-neon-cyan hover:border-neon-cyan/40 transition-all"
+                        class="w-9 h-9 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--primary)] hover:border-[var(--primary)] transition-all"
                         aria-label="GitHub">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -38,7 +38,7 @@
 
             {{-- Services --}}
             <div>
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Services</h3>
+                <h3 class="text-sm font-semibold text-[var(--heading)] uppercase tracking-wider mb-4">Services</h3>
                 <ul class="space-y-2">
                     @foreach([
                     'Maintenance & Support IT' => 'maintenance-support-it',
@@ -50,7 +50,8 @@
                     ] as $label => $slug)
                     <li>
                         <a href="{{ route('services.show', $slug) }}"
-                            class="text-slate-400 text-sm hover:text-neon-cyan transition-colors">{{ $label }}</a>
+                            class="text-[var(--muted)] text-sm hover:text-[var(--primary)] transition-colors">{{ $label
+                            }}</a>
                     </li>
                     @endforeach
                 </ul>
@@ -58,28 +59,33 @@
 
             {{-- Liens --}}
             <div>
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Entreprise</h3>
+                <h3 class="text-sm font-semibold text-[var(--heading)] uppercase tracking-wider mb-4">Entreprise</h3>
                 <ul class="space-y-2">
                     <li><a href="{{ route('about') }}"
-                            class="text-slate-400 text-sm hover:text-neon-cyan transition-colors">À propos</a></li>
+                            class="text-[var(--muted)] text-sm hover:text-[var(--primary)] transition-colors">À
+                            propos</a></li>
                     <li><a href="{{ route('portfolio.index') }}"
-                            class="text-slate-400 text-sm hover:text-neon-cyan transition-colors">Réalisations</a></li>
+                            class="text-[var(--muted)] text-sm hover:text-[var(--primary)] transition-colors">Réalisations</a>
+                    </li>
                     <li><a href="{{ route('blog.index') }}"
-                            class="text-slate-400 text-sm hover:text-neon-cyan transition-colors">Blog</a></li>
+                            class="text-[var(--muted)] text-sm hover:text-[var(--primary)] transition-colors">Blog</a>
+                    </li>
                     <li><a href="{{ route('contact') }}"
-                            class="text-slate-400 text-sm hover:text-neon-cyan transition-colors">Contact</a></li>
+                            class="text-[var(--muted)] text-sm hover:text-[var(--primary)] transition-colors">Contact</a>
+                    </li>
                     <li><a href="{{ route('quote') }}"
-                            class="text-slate-400 text-sm hover:text-neon-cyan transition-colors">Demander un devis</a>
+                            class="text-[var(--muted)] text-sm hover:text-[var(--primary)] transition-colors">Demander
+                            un devis</a>
                     </li>
                 </ul>
             </div>
 
             {{-- Contact --}}
             <div>
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contact</h3>
-                <ul class="space-y-3 text-slate-400 text-sm">
+                <h3 class="text-sm font-semibold text-[var(--heading)] uppercase tracking-wider mb-4">Contact</h3>
+                <ul class="space-y-3 text-[var(--muted)] text-sm">
                     <li class="flex items-start gap-2">
-                        <svg class="w-4 h-4 text-neon-cyan mt-0.5 shrink-0" fill="none" stroke="currentColor"
+                        <svg class="w-4 h-4 text-[var(--primary)] mt-0.5 shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -89,7 +95,7 @@
                         Yaoundé, Cameroun
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-neon-cyan shrink-0" fill="none" stroke="currentColor"
+                        <svg class="w-4 h-4 text-[var(--primary)] shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -97,7 +103,7 @@
                         contact@marveltechs.cm
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-neon-cyan shrink-0" fill="none" stroke="currentColor"
+                        <svg class="w-4 h-4 text-[var(--primary)] shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -106,7 +112,7 @@
                     </li>
                     <li class="mt-3">
                         <span class="badge badge-emerald">
-                            <span class="w-1.5 h-1.5 rounded-full bg-neon-emerald animate-pulse"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse"></span>
                             Réponse sous 24h
                         </span>
                     </li>
@@ -116,7 +122,7 @@
 
         <div class="section-divider mb-6"></div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-xs">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[var(--muted)] text-xs">
             <p>© {{ date('Y') }} Marvel Tech's. Tous droits réservés.</p>
             <p>Conçu avec ❤️ pour l'Afrique & le monde</p>
         </div>

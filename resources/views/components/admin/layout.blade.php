@@ -1,7 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 
 <head>
+    <script>
+        // Anti-FOUC: Apply theme before rendering
+        (function () {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Admin' }} | Marvel Tech's</title>
@@ -11,13 +23,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen flex bg-[#080c16]">
+<body class="min-h-screen flex bg-[var(--bg)]">
 
     {{-- Sidebar --}}
-    <aside class="w-64 shrink-0 border-r border-slate-800/60 bg-[#0b0f1a] flex flex-col min-h-screen">
-        <div class="p-5 border-b border-slate-800/60">
+    <aside class="w-64 shrink-0 border-r border-[var(--border)] bg-[var(--surface)] flex flex-col min-h-screen">
+        <div class="p-5 border-b border-[var(--border)]">
             <a href="{{ route('admin.dashboard') }}" class="text-lg font-extrabold text-gradient-cyan">Marvel Tech's</a>
-            <div class="text-xs text-slate-500 mt-0.5">Administration</div>
+            <div class="text-xs text-[var(--muted)] mt-0.5">Administration</div>
         </div>
 
         <nav class="flex-1 p-4 space-y-1">
@@ -54,7 +66,8 @@
                 Blog
             </a>
             <div class="pt-3 pb-1 px-1">
-                <div class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Boîte de réception</div>
+                <div class="text-xs font-semibold text-[var(--muted)] opacity-60 uppercase tracking-wider">Boîte de
+                    réception</div>
             </div>
             <a href="{{ route('admin.contacts.index') }}"
                 class="admin-sidebar-link {{ request()->routeIs('admin.contacts*') ? 'active' : '' }}">
@@ -74,7 +87,7 @@
             </a>
         </nav>
 
-        <div class="p-4 border-t border-slate-800/60">
+        <div class="p-4 border-t border-[var(--border)]">
             <div class="flex items-center gap-3 mb-3">
                 <div
                     class="w-8 h-8 rounded-full bg-gradient-to-br from-neon-cyan to-neon-violet flex items-center justify-center text-dark-900 font-bold text-xs">
@@ -82,7 +95,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-sm font-semibold text-white truncate">{{ auth()->user()->name }}</div>
-                    <div class="text-xs text-slate-500 truncate">{{ auth()->user()->email }}</div>
+                    <div class="text-xs text-[var(--muted)] truncate">{{ auth()->user()->email }}</div>
                 </div>
             </div>
             <form method="POST" action="{{ route('logout') }}">
@@ -101,10 +114,10 @@
     {{-- Main --}}
     <div class="flex-1 flex flex-col min-h-screen">
         {{-- Top bar --}}
-        <header class="h-14 border-b border-slate-800/60 flex items-center justify-between px-6">
-            <h1 class="text-base font-semibold text-white">{{ $title ?? 'Administration' }}</h1>
+        <header class="h-14 border-b border-[var(--border)] flex items-center justify-between px-6">
+            <h1 class="text-base font-semibold text-[var(--heading)]">{{ $title ?? 'Administration' }}</h1>
             <a href="{{ route('home') }}" target="_blank"
-                class="text-xs text-slate-400 hover:text-neon-cyan transition-colors flex items-center gap-1">
+                class="text-xs text-[var(--muted)] hover:text-[var(--primary)] transition-colors flex items-center gap-1">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

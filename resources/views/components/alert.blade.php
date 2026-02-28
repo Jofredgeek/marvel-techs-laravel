@@ -1,10 +1,10 @@
 @props(['type' => 'success', 'dismissible' => false])
 @php
 $colors = [
-'success' => 'border-neon-emerald/30 bg-neon-emerald/10 text-neon-emerald',
-'error' => 'border-neon-rose/30 bg-neon-rose/10 text-neon-rose',
-'warning' => 'border-neon-amber/30 bg-neon-amber/10 text-neon-amber',
-'info' => 'border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan',
+'success' => 'border-[var(--success)]/30 bg-[var(--success)]/10 text-[var(--success)]',
+'error' => 'border-[var(--danger)]/30 bg-[var(--danger)]/10 text-[var(--danger)]',
+'warning' => 'border-[var(--warning)]/30 bg-[var(--warning)]/10 text-[var(--warning)]',
+'info' => 'border-[var(--primary)]/30 bg-[var(--primary)]/10 text-[var(--primary)]',
 ];
 @endphp
 <div {{ $attributes->merge(['class' => "border rounded-xl p-4 flex items-start gap-3 {$colors[$type]}"]) }}

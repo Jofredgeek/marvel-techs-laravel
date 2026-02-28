@@ -8,9 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+        })();
+    </script>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] relative overflow-hidden">
+<body
+    class="min-h-screen flex flex-col items-center justify-center bg-[var(--background)] transition-colors duration-300 relative overflow-hidden">
     <div class="hero-glow w-80 h-80 bg-neon-cyan/12 -top-20 -left-20"></div>
     <div class="hero-glow w-64 h-64 bg-neon-violet/10 bottom-10 -right-10"></div>
     <div class="absolute inset-0 opacity-[0.025]"
@@ -19,8 +26,8 @@
 
     <div class="relative z-10 text-center px-4">
         <div class="text-9xl font-black text-gradient-cyan mb-4">404</div>
-        <h1 class="text-3xl font-bold text-white mb-4">Page introuvable</h1>
-        <p class="text-slate-400 text-lg mb-8 max-w-md mx-auto">
+        <h1 class="text-3xl font-bold text-[var(--heading)] mb-4">Page introuvable</h1>
+        <p class="text-[var(--muted)] text-lg mb-8 max-w-md mx-auto">
             Cette page n'existe pas ou a été déplacée. Revenons sur des bases solides.
         </p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
@@ -28,7 +35,7 @@
             <a href="{{ route('contact') }}" class="btn-outline">Nous contacter</a>
         </div>
         <div class="mt-12 glass rounded-xl px-6 py-4 inline-block">
-            <p class="text-slate-400 text-sm">Vous cherchiez peut-être :</p>
+            <p class="text-[var(--muted)] text-sm">Vous cherchiez peut-être :</p>
             <div class="flex flex-wrap gap-2 mt-2 justify-center">
                 <a href="{{ route('services.index') }}" class="badge badge-cyan">Services</a>
                 <a href="{{ route('portfolio.index') }}" class="badge badge-violet">Portfolio</a>

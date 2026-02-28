@@ -1,10 +1,10 @@
 <x-layout :title="$project->title . ' — Portfolio | Marvel Tech\'s'" :description="$project->excerpt">
     <div class="pt-28 pb-24">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav class="flex items-center gap-2 text-sm text-slate-400 mb-10" aria-label="Fil d'Ariane">
+            <nav class="flex items-center gap-2 text-sm text-[var(--muted)] mb-10" aria-label="Fil d'Ariane">
                 <a href="{{ route('portfolio.index') }}" class="hover:text-neon-cyan transition-colors">Portfolio</a>
                 <span>/</span>
-                <span class="text-slate-300">{{ $project->title }}</span>
+                <span class="text-[var(--text)]">{{ $project->title }}</span>
             </nav>
 
             {{-- Header --}}
@@ -15,7 +15,7 @@
                     @endforeach
                 </div>
                 <h1 class="text-4xl font-extrabold text-white mb-3">{{ $project->title }}</h1>
-                <div class="flex flex-wrap gap-4 text-slate-400 text-sm">
+                <div class="flex flex-wrap gap-4 text-[var(--muted)] text-sm">
                     <span>👤 Client : {{ $project->client }}</span>
                     <span>📅 Année : {{ $project->year }}</span>
                 </div>
@@ -27,7 +27,7 @@
             </div>
 
             {{-- Content --}}
-            <div class="glass rounded-xl p-8 mb-10 text-slate-300 leading-relaxed">
+            <div class="glass rounded-xl p-8 mb-10 text-[var(--text)] opacity-90 leading-relaxed">
                 {!! nl2br(e($project->content)) !!}
             </div>
 

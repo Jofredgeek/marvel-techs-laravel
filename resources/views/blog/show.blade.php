@@ -1,10 +1,10 @@
 <x-layout :title="$post->title . ' | Blog Marvel Tech\'s'" :description="$post->excerpt">
     <div class="pt-28 pb-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav class="flex items-center gap-2 text-sm text-slate-400 mb-10" aria-label="Fil d'Ariane">
+            <nav class="flex items-center gap-2 text-sm text-[var(--muted)] mb-10" aria-label="Fil d'Ariane">
                 <a href="{{ route('blog.index') }}" class="hover:text-neon-cyan transition-colors">Blog</a>
                 <span>/</span>
-                <span class="text-slate-300">{{ Str::limit($post->title, 40) }}</span>
+                <span class="text-[var(--text)]">{{ Str::limit($post->title, 40) }}</span>
             </nav>
 
             {{-- Header --}}
@@ -16,7 +16,7 @@
                     @endforeach
                 </div>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">{{ $post->title }}</h1>
-                <div class="flex items-center gap-3 text-slate-400 text-sm">
+                <div class="flex items-center gap-3 text-[var(--muted)] text-sm">
                     <div
                         class="w-8 h-8 rounded-full bg-gradient-to-br from-neon-cyan to-neon-violet flex items-center justify-center text-dark-900 font-bold text-xs">
                         MT</div>
@@ -37,13 +37,13 @@
         @endif
 
         {{-- Content --}}
-        <article class="glass rounded-xl p-8 mb-10 text-slate-300 leading-relaxed">
+        <article class="glass rounded-xl p-8 mb-10 text-[var(--text)] opacity-90 leading-relaxed">
             {!! nl2br(e($post->content)) !!}
         </article>
 
         {{-- Share --}}
         <div class="glass rounded-xl p-5 mb-10 flex flex-col sm:flex-row items-center gap-4">
-            <span class="text-slate-400 text-sm font-medium">Partager cet article</span>
+            <span class="text-[var(--muted)] text-sm font-medium">Partager cet article</span>
             <div class="flex gap-3">
                 <a href="https://twitter.com/intent/tweet?text={{ urlencode($post->title) }}&url={{ urlencode(url()->current()) }}"
                     target="_blank" class="btn-outline text-xs py-1.5 px-4">𝕏 Twitter</a>

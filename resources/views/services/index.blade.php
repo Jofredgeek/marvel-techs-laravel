@@ -11,18 +11,20 @@
                 <a href="{{ route('services.show', $service->slug) }}"
                     class="reveal group glass glass-hover rounded-xl p-7 flex flex-col">
                     <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-3xl"
-                        style="background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.15);">
+                        style="background: var(--surface-2); border: 1px solid var(--border);">
                         {{ $service->icon }}
                     </div>
-                    <h2 class="text-xl font-bold text-white mb-3 group-hover:text-neon-cyan transition-colors">{{
+                    <h2
+                        class="text-xl font-bold text-[var(--heading)] mb-3 group-hover:text-[var(--primary)] transition-colors">
+                        {{
                         $service->title }}</h2>
-                    <p class="text-slate-400 text-sm leading-relaxed flex-1 mb-5">{{ $service->excerpt }}</p>
+                    <p class="text-[var(--muted)] text-sm leading-relaxed flex-1 mb-5">{{ $service->excerpt }}</p>
                     <div class="flex flex-wrap gap-1.5 mb-5">
                         @foreach($service->technologies ?? [] as $tech)
                         <x-badge color="violet">{{ $tech }}</x-badge>
                         @endforeach
                     </div>
-                    <span class="text-neon-cyan text-sm font-semibold flex items-center gap-1">
+                    <span class="text-[var(--primary)] text-sm font-semibold flex items-center gap-1">
                         Découvrir ce service
                         <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -35,8 +37,9 @@
 
             {{-- CTA --}}
             <div class="mt-20 text-center glass rounded-2xl p-10">
-                <h3 class="text-2xl font-bold text-white mb-3">Besoin d'un service sur mesure ?</h3>
-                <p class="text-slate-400 mb-6 max-w-xl mx-auto">Chaque entreprise est unique. Décrivez-nous votre projet
+                <h3 class="text-2xl font-bold text-[var(--heading)] mb-3">Besoin d'un service sur mesure ?</h3>
+                <p class="text-[var(--muted)] mb-6 max-w-xl mx-auto">Chaque entreprise est unique. Décrivez-nous votre
+                    projet
                     et nous vous proposerons une solution adaptée.</p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
                     <a href="{{ route('quote') }}" class="btn-primary">Demander un devis gratuit</a>

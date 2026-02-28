@@ -4,9 +4,9 @@
     {{-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ --}}
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         {{-- Glow orbs --}}
-        <div class="hero-glow w-96 h-96 bg-neon-cyan/15 -top-20 -left-20 animate-pulse-slow"></div>
-        <div class="hero-glow w-80 h-80 bg-neon-violet/12 top-1/3 -right-20"></div>
-        <div class="hero-glow w-64 h-64 bg-neon-emerald/10 bottom-20 left-1/4"></div>
+        <div class="hero-glow w-96 h-96 bg-[var(--primary)]/15 -top-20 -left-20 animate-pulse-slow"></div>
+        <div class="hero-glow w-80 h-80 bg-[var(--secondary)]/12 top-1/3 -right-20"></div>
+        <div class="hero-glow w-64 h-64 bg-[var(--success)]/10 bottom-20 left-1/4"></div>
 
         {{-- Grid background --}}
         <div class="absolute inset-0 opacity-[0.03]"
@@ -15,23 +15,26 @@
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
             {{-- Pre-title badge --}}
-            <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8 border border-neon-cyan/20">
-                <span class="w-2 h-2 rounded-full bg-neon-emerald animate-pulse"></span>
-                <span class="text-sm text-neon-cyan font-medium">Disponible · Réponse sous 24h · Audit gratuit 15
+            <div
+                class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8 border border-[var(--primary)]/20">
+                <span class="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse"></span>
+                <span class="text-sm text-[var(--primary)] font-medium">Disponible · Réponse sous 24h · Audit gratuit 15
                     min</span>
             </div>
 
             {{-- Headline --}}
             <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 tracking-tight">
-                <span class="text-white">Marvel</span>
+                <span class="text-[var(--heading)]">Marvel</span>
                 <span class="text-gradient-cyan"> Tech's</span>
                 <br>
-                <span class="text-white text-4xl sm:text-5xl lg:text-6xl font-bold">Solutions IT Modernes</span>
+                <span class="text-[var(--heading)] text-4xl sm:text-5xl lg:text-6xl font-bold">Solutions IT
+                    Modernes</span>
             </h1>
 
-            <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+            <p class="text-xl text-[var(--muted)] max-w-3xl mx-auto mb-10 leading-relaxed">
                 Réseau · Cloud · Cybersécurité · Développement Web · Maintenance · Support<br>
-                <span class="text-slate-300 font-medium">Votre partenaire technologique de confiance.</span>
+                <span class="text-[var(--muted)] opacity-80 font-medium">Votre partenaire technologique de
+                    confiance.</span>
             </p>
 
             {{-- CTAs --}}
@@ -65,17 +68,17 @@
                 @foreach($heroStats as $stat)
                 <div class="glass rounded-xl p-4">
                     <div class="text-2xl font-extrabold text-gradient-cyan">{{ $stat[0] }}</div>
-                    <div class="text-xs text-slate-400 mt-1">{{ $stat[1] }}</div>
+                    <p class="text-xs text-[var(--muted)] opacity-60 mt-1">{{ $stat[1] }}</p>
                 </div>
                 @endforeach
             </div>
         </div>
 
         {{-- Scroll indicator --}}
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500">
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--muted)]">
             <span class="text-xs">Découvrez</span>
-            <div class="w-5 h-8 border border-slate-600 rounded-full flex items-start justify-center p-1">
-                <div class="w-1 h-2 bg-neon-cyan rounded-full animate-bounce"></div>
+            <div class="w-5 h-8 border border-[var(--border)] rounded-full flex items-start justify-center p-1">
+                <div class="w-1 h-2 bg-[var(--primary)] rounded-full animate-bounce"></div>
             </div>
         </div>
     </section>
@@ -95,10 +98,12 @@
                     style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.2);">
                     {{ $service->icon }}
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2 group-hover:text-neon-cyan transition-colors">{{
+                <h3
+                    class="text-lg font-bold text-[var(--heading)] mb-2 group-hover:text-[var(--primary)] transition-colors">
+                    {{
                     $service->title }}</h3>
-                <p class="text-slate-400 text-sm leading-relaxed mb-4">{{ $service->excerpt }}</p>
-                <span class="text-neon-cyan text-sm font-medium flex items-center gap-1">
+                <p class="text-[var(--muted)] text-sm leading-relaxed mb-4">{{ $service->excerpt }}</p>
+                <span class="text-[var(--primary)] text-sm font-medium flex items-center gap-1">
                     En savoir plus
                     <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -134,10 +139,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($steps as $step)
             <div class="reveal glass rounded-xl p-6 relative">
-                <div class="absolute top-4 right-4 text-slate-700 font-black text-4xl select-none">{{ $step[0] }}</div>
+                <div class="absolute top-4 right-4 text-[var(--border)] font-black text-4xl select-none">{{ $step[0] }}
+                </div>
                 <div class="text-3xl mb-4">{{ $step[1] }}</div>
-                <h3 class="text-lg font-bold text-white mb-2">{{ $step[2] }}</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">{{ $step[3] }}</p>
+                <h3 class="text-lg font-bold text-[var(--heading)] mb-2">{{ $step[2] }}</h3>
+                <p class="text-[var(--muted)] text-sm leading-relaxed">{{ $step[3] }}</p>
             </div>
             @endforeach
         </div>
@@ -157,17 +163,19 @@
                 class="reveal group glass glass-hover rounded-xl overflow-hidden block">
                 <div
                     class="h-44 bg-gradient-to-br from-neon-cyan/10 via-neon-violet/10 to-neon-emerald/10 flex items-center justify-center">
-                    <span class="text-5xl">{{ $project->cover_image ?? '🖥️' }}</span>
+                    <span class="text-[var(--text)]">{{ $project->title }}</span>
                 </div>
                 <div class="p-5">
-                    <div class="flex flex-wrap gap-1.5 mb-3">
+                    <div class="flex flex-wrap gap-4 text-[var(--muted)] text-sm">
                         @foreach($project->tags ?? [] as $tag)
                         <x-badge color="cyan">{{ $tag }}</x-badge>
                         @endforeach
                     </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-neon-cyan transition-colors mb-1">{{
+                    <h3
+                        class="text-base font-bold text-[var(--heading)] group-hover:text-[var(--primary)] transition-colors mb-1">
+                        {{
                         $project->title }}</h3>
-                    <p class="text-slate-400 text-xs">{{ $project->client }} · {{ $project->year }}</p>
+                    <p class="text-[var(--muted)] text-xs">{{ $project->client }} · {{ $project->year }}</p>
                 </div>
             </a>
             @endforeach
@@ -200,16 +208,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($testimonials as $t)
             <div class="reveal glass rounded-xl p-6">
-                <div class="text-neon-amber text-lg mb-3">{{ $t[2] }}</div>
-                <p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"{{ $t[3] }}"</p>
+                <div class="text-[var(--warning)] text-lg mb-3">{{ $t[2] }}</div>
+                <p class="text-[var(--text)] opacity-80 text-sm leading-relaxed mb-5 italic">"{{ $t[3] }}"</p>
                 <div class="flex items-center gap-3">
                     <div
-                        class="w-10 h-10 rounded-full bg-gradient-to-br from-neon-cyan to-neon-violet flex items-center justify-center text-dark-900 font-bold text-sm">
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-[var(--primary-foreground)] font-bold text-sm">
                         {{ $t[4] }}
                     </div>
                     <div>
-                        <div class="text-sm font-semibold text-white">{{ $t[0] }}</div>
-                        <div class="text-xs text-slate-400">{{ $t[1] }}</div>
+                        <label class="block text-sm font-medium text-[var(--muted)] mb-1.5">Fonctionnalités /
+                            bénéfices</label>
+                        <div class="text-xs text-[var(--muted)] opacity-60 uppercase tracking-wider">
+                            {{ $t[1] }}</div>
                     </div>
                 </div>
             </div>
@@ -231,10 +241,11 @@
                 <div class="mb-6">
                     <x-badge color="cyan">Starter</x-badge>
                     <div class="mt-4 flex items-end gap-2">
-                        <span class="text-4xl font-extrabold text-white">50 000</span>
-                        <span class="text-slate-400 mb-1">FCFA / mois</span>
+                        <span class="text-4xl font-extrabold text-[var(--heading)]">50 000</span>
+                        <span class="text-[var(--muted)] mb-1">FCFA / mois</span>
                     </div>
-                    <p class="text-slate-400 text-sm mt-2">Idéal pour les TPE & indépendants</p>
+                    <p class="text-[var(--muted)] text-lg">Audit gratuit de 15 min · Réponse sous 24h · Sans engagement
+                    </p>
                 </div>
                 @php
                 $starterFeatures = ['Support IT (8h-18h)', '2 interventions/mois', 'Maintenance basique', 'Rapport
@@ -242,7 +253,7 @@
                 @endphp
                 <ul class="space-y-3 mb-8 flex-1">
                     @foreach($starterFeatures as $feature)
-                    <li class="flex items-center gap-2 text-sm text-slate-300">
+                    <li class="flex items-center gap-2 text-sm text-[var(--muted)]">
                         <svg class="w-4 h-4 text-neon-emerald shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -256,17 +267,17 @@
 
             {{-- Pro (popular) --}}
             <div class="reveal relative border-gradient">
-                <div class="glass rounded-xl p-7 flex flex-col h-full">
+                <div class="glass rounded-xl p-8 mb-10 text-[var(--text)] opacity-90 leading-relaxed">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2">
                         <span class="pricing-popular">⭐ Le plus populaire</span>
                     </div>
                     <div class="mb-6">
                         <x-badge color="violet">Pro</x-badge>
                         <div class="mt-4 flex items-end gap-2">
-                            <span class="text-4xl font-extrabold text-white">150 000</span>
-                            <span class="text-slate-400 mb-1">FCFA / mois</span>
+                            <span class="text-4xl font-extrabold text-[var(--heading)]">150 000</span>
+                            <span class="text-[var(--muted)] mb-1">FCFA / mois</span>
                         </div>
-                        <p class="text-slate-400 text-sm mt-2">Pour les PME en croissance</p>
+                        <p class="text-[var(--muted)] text-sm mt-2">Pour les PME en croissance</p>
                     </div>
                     @php
                     $proFeatures = ['Support IT 24/7', 'Interventions illimitées', 'Audit sécurité trimestriel',
@@ -274,8 +285,8 @@
                     @endphp
                     <ul class="space-y-3 mb-8 flex-1">
                         @foreach($proFeatures as $feature)
-                        <li class="flex items-center gap-2 text-sm text-slate-300">
-                            <svg class="w-4 h-4 text-neon-emerald shrink-0" fill="none" stroke="currentColor"
+                        <li class="flex items-center gap-2 text-sm text-[var(--text)] opacity-90">
+                            <svg class="w-4 h-4 text-[var(--success)] shrink-0" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 13l4 4L19 7" />
@@ -293,9 +304,9 @@
                 <div class="mb-6">
                     <x-badge color="emerald">Enterprise</x-badge>
                     <div class="mt-4 flex items-end gap-2">
-                        <span class="text-4xl font-extrabold text-white">Sur devis</span>
+                        <span class="text-4xl font-extrabold text-[var(--heading)]">Sur devis</span>
                     </div>
-                    <p class="text-slate-400 text-sm mt-2">Pour les grandes structures & projets complexes</p>
+                    <p class="text-[var(--muted)] text-sm mt-2">Pour les grandes structures & projets complexes</p>
                 </div>
                 @php
                 $entFeatures = ['Tout du plan Pro', 'Ingénieur dédié', 'Architecture sur mesure', 'Formation équipe',
@@ -303,7 +314,7 @@
                 @endphp
                 <ul class="space-y-3 mb-8 flex-1">
                     @foreach($entFeatures as $feature)
-                    <li class="flex items-center gap-2 text-sm text-slate-300">
+                    <li class="flex items-center gap-2 text-sm text-[var(--muted)]">
                         <svg class="w-4 h-4 text-neon-emerald shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -352,15 +363,15 @@
                 <button @click="open = open === {{ $i }} ? null : {{ $i }}"
                     class="w-full flex items-center justify-between p-5 text-left"
                     :aria-expanded="open === {{ $i }} ? 'true' : 'false'">
-                    <span class="font-semibold text-white text-sm sm:text-base">{{ $q }}</span>
-                    <svg class="w-5 h-5 text-neon-cyan shrink-0 ml-4 transition-transform duration-300"
+                    <span class="font-semibold text-[var(--heading)] text-sm sm:text-base">{{ $q }}</span>
+                    <svg class="w-5 h-5 text-[var(--primary)] shrink-0 ml-4 transition-transform duration-300"
                         :class="{ 'rotate-45': open === {{ $i }} }" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                 </button>
                 <div x-show="open === {{ $i }}" x-collapse
-                    class="px-5 pb-5 text-slate-400 text-sm leading-relaxed border-t border-slate-700/50 pt-4">
+                    class="px-5 pb-5 text-[var(--muted)] text-sm leading-relaxed border-t border-[var(--border)] pt-4">
                     {{ $a }}
                 </div>
             </div>
@@ -378,10 +389,10 @@
                     </div>
                     <div class="relative z-10">
                         <x-badge color="emerald" class="mb-6">🚀 Prêt à démarrer ?</x-badge>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 mt-4">
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--heading)] mb-4 mt-4">
                             Transformons votre IT ensemble
                         </h2>
-                        <p class="text-slate-400 text-lg mb-8 max-w-xl mx-auto">
+                        <p class="text-[var(--muted)] text-lg mb-8 max-w-xl mx-auto">
                             Un audit gratuit de 15 minutes pour identifier vos enjeux. Sans engagement, sans jargon
                             inutile.
                         </p>
