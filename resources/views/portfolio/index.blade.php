@@ -1,0 +1,62 @@
+<x-layout title="Réalisations & Portfolio | Marvel Tech's"
+    description="Découvrez les projets IT réalisés par Marvel Tech's : sites web, infrastructures réseau, audits sécurité, migration cloud et plus encore.">
+    <div class="pt-28 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <x-section-title tag="Portfolio" title="Nos réalisations">
+                Des projets concrets, des défis relevés, des clients satisfaits.
+            </x-section-title>
+
+            {{-- Alpine filter --}}
+            <div x-data="{
+                activeFilter: 'Tous',
+                filters: ['Tous', 'Web', 'Réseau', 'Security', 'Cloud', 'Mobile'],
+                projects: {{ Js::from($projects) }},
+                get filtered() {
+                    if (this.activeFilter === 'Tous') return this.projects;
+                    return this.projects.filter(p => {
+                    return (p.tags || []).includes(this.activeFilter);
+                    });
+                }
+            }">
+                {{-- Filter buttons --}}
+                <div class="flex flex-wrap gap-2 justify-center mb-10">
+                    <template x-for="f in filters" :key="f">
+                        <button @click="activeFilter = f"
+                            :class="activeFilter === f ? 'bg-neon-cyan text-dark-900 border-neon-cyan' : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'"
+                            class="px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200"
+                            x-text="f"></button>
+                    </template>
+                </div>
+
+                {{-- Projects grid --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="project in filtered" :key="project.id">
+                        <a :href="`/portfolio/${project.slug}`"
+                            class="group glass glass-hover rounded-xl overflow-hidden block">
+                            <div
+                                class="h-48 bg-gradient-to-br from-neon-cyan/10 via-neon-violet/10 to-neon-emerald/10 flex items-center justify-center">
+                                <span class="text-6xl" x-text="project.cover_image || '🖥️'"></span>
+                            </div>
+                            <div class="p-5">
+                                <div class="flex flex-wrap gap-1.5 mb-3">
+                                    <template x-for="tag in (project.tags || [])" :key="tag">
+                                        <span class="badge badge-cyan" x-text="tag"></span>
+                                    </template>
+                                </div>
+                                <h3 class="font-bold text-white group-hover:text-neon-cyan transition-colors mb-1"
+                                    x-text="project.title"></h3>
+                                <p class="text-slate-400 text-xs" x-text="`${project.client} · ${project.year}`"></p>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+
+                {{-- Empty state --}}
+                <div x-show="filtered.length === 0" class="text-center py-16 text-slate-400">
+                    <div class="text-5xl mb-4">🔍</div>
+                    <p>Aucun projet dans cette catégorie pour le moment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-layout>
