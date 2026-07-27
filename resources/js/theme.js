@@ -1,12 +1,12 @@
 // Theme Management Logic
 const themeManager = {
     init() {
-        this.toggleBtn = document.getElementById('theme-toggle');
-        if (this.toggleBtn) {
-            this.toggleBtn.addEventListener('click', () => this.toggle());
-        }
+        // Attach listener to ALL toggle buttons (desktop + mobile)
+        document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.toggle());
+        });
 
-        // Listen for system changes if no preference is set
+        // Listen for system preference changes (only if no saved preference)
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             if (!localStorage.getItem('theme')) {
                 this.applyTheme(e.matches ? 'dark' : 'light');
@@ -17,7 +17,6 @@ const themeManager = {
     toggle() {
         const isDark = document.documentElement.classList.contains('dark');
         const newTheme = isDark ? 'light' : 'dark';
-
         this.applyTheme(newTheme);
         localStorage.setItem('theme', newTheme);
     },
@@ -29,8 +28,7 @@ const themeManager = {
         } else {
             document.documentElement.classList.remove('dark');
         }
-
-        // Dispatch event for components that might need to know
+        // Notify other components
         window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }));
     }
 };

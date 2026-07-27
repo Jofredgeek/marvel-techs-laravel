@@ -32,16 +32,19 @@
         content="{{ $description ?? 'Expert en maintenance IT, réseaux, cybersécurité, développement web, cloud et DevOps.' }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="Marvel Tech's">
-    <meta property="og:image" content="{{ $ogImage ?? asset('images/og-default.png') }}">
+    @if(!empty($ogImage))
+    <meta property="og:image" content="{{ $ogImage }}">
+    @endif
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
 
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{ $head ?? '' }}
@@ -57,6 +60,7 @@
     <x-footer />
 
     {{ $scripts ?? '' }}
+    @stack('scripts')
 </body>
 
 </html>

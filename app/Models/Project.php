@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUniqueSlug;
 
     protected $fillable = ['title', 'slug', 'client', 'year', 'tags', 'excerpt', 'content', 'cover_image', 'gallery', 'featured'];
 
@@ -17,10 +17,4 @@ class Project extends Model
         'gallery' => 'array',
         'featured' => 'boolean',
     ];
-
-    protected static function boot(): void
-    {
-        parent::boot();
-        static::creating(fn($m) => $m->slug ??= Str::slug($m->title));
-    }
 }

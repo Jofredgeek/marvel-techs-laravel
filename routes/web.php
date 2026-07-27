@@ -1,55 +1,64 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\Admin\AdminActivityController;
+use App\Http\Controllers\Admin\AdminContactController;
+use App\Http\Controllers\Admin\AdminPostController;
+use App\Http\Controllers\Admin\AdminProjectController;
+use App\Http\Controllers\Admin\AdminQuoteController;
+use App\Http\Controllers\Admin\AdminServiceController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\QuoteController;
-use App\Http\Controllers\AboutController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\AdminServiceController;
-use App\Http\Controllers\Admin\AdminProjectController;
-use App\Http\Controllers\Admin\AdminPostController;
-use App\Http\Controllers\Admin\AdminContactController;
-use App\Http\Controllers\Admin\AdminQuoteController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Public routes ────────────────────────────────────────────────────────────
-Route::get('/', [HomeController::class , 'index'])->name('home');
-Route::get('/about', [AboutController::class , 'index'])->name('about');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 Route::prefix('services')->name('services.')->group(function () {
-    Route::get('/', [ServiceController::class , 'index'])->name('index');
-    Route::get('/{slug}', [ServiceController::class , 'show'])->name('show');
+    Route::get('/', [ServiceController::class, 'index'])->name('index');
+    Route::get('/{slug}', [ServiceController::class, 'show'])->name('show');
 });
 
 Route::prefix('portfolio')->name('portfolio.')->group(function () {
-    Route::get('/', [PortfolioController::class , 'index'])->name('index');
-    Route::get('/{slug}', [PortfolioController::class , 'show'])->name('show');
+    Route::get('/', [PortfolioController::class, 'index'])->name('index');
+    Route::get('/{slug}', [PortfolioController::class, 'show'])->name('show');
 });
 
 Route::prefix('blog')->name('blog.')->group(function () {
-    Route::get('/', [BlogController::class , 'index'])->name('index');
-    Route::get('/{slug}', [BlogController::class , 'show'])->name('show');
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
 });
 
-Route::get('/contact', [ContactController::class , 'create'])->name('contact');
-Route::post('/contact', [ContactController::class , 'store'])->name('contact.store');
+Route::get('/contact', [ContactController::class, 'create'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('contact.store');
 
-Route::get('/devis', [QuoteController::class , 'create'])->name('quote');
-Route::post('/devis', [QuoteController::class , 'store'])->name('quote.store');
+Route::get('/devis', [QuoteController::class, 'create'])->name('quote');
+Route::post('/devis', [QuoteController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('quote.store');
 
 // ─── Auth routes (Breeze) ─────────────────────────────────────────────────────
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 // ─── Admin routes ─────────────────────────────────────────────────────────────
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
-    Route::get('/', [DashboardController::class , 'index'])->name('dashboard');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('activities', [AdminActivityController::class, 'index'])->name('activities.index');
+    Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::patch('users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
 
     // Services CRUD
-    Route::resource('services', AdminServiceController::class)->names([
+    Route::resource('services', AdminServiceController::class)->except('show')->names([
         'index' => 'services.index',
         'create' => 'services.create',
         'store' => 'services.store',
@@ -59,7 +68,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     ]);
 
     // Portfolio CRUD
-    Route::resource('projects', AdminProjectController::class)->names([
+    Route::resource('projects', AdminProjectController::class)->except('show')->names([
         'index' => 'projects.index',
         'create' => 'projects.create',
         'store' => 'projects.store',
@@ -69,7 +78,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     ]);
 
     // Blog CRUD
-    Route::resource('posts', AdminPostController::class)->names([
+    Route::resource('posts', AdminPostController::class)->except('show')->names([
         'index' => 'posts.index',
         'create' => 'posts.create',
         'store' => 'posts.store',
@@ -79,21 +88,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     ]);
 
     // Contacts
-    Route::get('contacts', [AdminContactController::class , 'index'])->name('contacts.index');
-    Route::delete('contacts/{contact}', [AdminContactController::class , 'destroy'])->name('contacts.destroy');
+    Route::get('contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+    Route::delete('contacts/{contact}', [AdminContactController::class, 'destroy'])->name('contacts.destroy');
 
     // Quotes
-    Route::get('quotes', [AdminQuoteController::class , 'index'])->name('quotes.index');
-    Route::delete('quotes/{quote}', [AdminQuoteController::class , 'destroy'])->name('quotes.destroy');
+    Route::get('quotes', [AdminQuoteController::class, 'index'])->name('quotes.index');
+    Route::patch('quotes/{quote}/status', [AdminQuoteController::class, 'updateStatus'])->name('quotes.status');
+    Route::delete('quotes/{quote}', [AdminQuoteController::class, 'destroy'])->name('quotes.destroy');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class , 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class , 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class , 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Alias for tests
 Route::get('/dashboard', function () {
-    return redirect()->route('admin.dashboard');
+    return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

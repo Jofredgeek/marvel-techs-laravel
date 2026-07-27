@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Service extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUniqueSlug;
 
     protected $fillable = ['title', 'slug', 'icon', 'excerpt', 'content', 'features', 'technologies', 'sort_order', 'active'];
 
@@ -17,12 +17,6 @@ class Service extends Model
         'technologies' => 'array',
         'active' => 'boolean',
     ];
-
-    protected static function boot(): void
-    {
-        parent::boot();
-        static::creating(fn($m) => $m->slug ??= Str::slug($m->title));
-    }
 
     public function scopeActive($query)
     {

@@ -17,7 +17,7 @@ class QuoteMail extends Mailable
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: '💼 Nouvelle demande de devis : ' . $this->quote->name . ' — ' . $this->quote->service);
+        return new Envelope(subject: '💼 Nouvelle demande de devis : '.$this->quote->name.' — '.$this->quote->service);
     }
 
     public function content(): Content

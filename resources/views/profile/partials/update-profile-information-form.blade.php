@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-[var(--muted)]">
-            {{ __("Update your account's profile information and email address.") }}
+            Mettez à jour votre nom et, si vous le souhaitez, votre adresse e-mail.
         </p>
     </header>
 
@@ -27,7 +27,7 @@
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
-                :value="old('email', $user->email)" required autocomplete="username" />
+                :value="old('email', $user->email)" autocomplete="username" placeholder="vous@exemple.com" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
@@ -49,6 +49,15 @@
             </div>
             @endif
         </div>
+
+        @if ($user->phone)
+        <div>
+            <x-input-label for="phone" value="Téléphone vérifié" />
+            <x-text-input id="phone" type="text" class="mt-1 block w-full opacity-75"
+                :value="$user->phone" disabled />
+            <p class="mt-2 text-xs text-[var(--muted)]">Le numéro ne peut être modifié qu’après une nouvelle vérification OTP.</p>
+        </div>
+        @endif
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

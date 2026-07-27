@@ -6,7 +6,7 @@
         </div>
         <a href="{{ route('admin.projects.create') }}" class="btn-primary text-sm">+ Nouveau</a>
     </div>
-    <div class="glass rounded-xl overflow-hidden">
+    <div class="glass rounded-xl overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="border-b border-[var(--border)]">
                 <tr class="text-[var(--muted)] text-xs uppercase tracking-wide">

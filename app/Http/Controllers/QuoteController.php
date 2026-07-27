@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QuoteRequest;
 use App\Mail\QuoteMail;
 use App\Models\Quote;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Service;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class QuoteController extends Controller
 {
     public function create()
     {
-        return view('quote');
+        $services = Service::active()->orderBy('sort_order')->pluck('title');
+
+        return view('quote', compact('services'));
     }
 
     public function store(QuoteRequest $request)
@@ -26,9 +29,8 @@ class QuoteController extends Controller
         try {
             Mail::to(config('mail.from.address', 'contact@marveltechs.cm'))
                 ->send(new QuoteMail($quote));
-        }
-        catch (\Exception $e) {
-            Log::error('QuoteMail error: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('QuoteMail error: '.$e->getMessage());
         }
 
         return redirect()->route('quote')->with('success', 'Votre demande de devis a bien été reçue. Nous vous contactons sous 24h avec une proposition personnalisée !');

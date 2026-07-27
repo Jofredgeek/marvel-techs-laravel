@@ -23,10 +23,10 @@
             </h2>
 
             <p class="mt-1 text-sm text-[var(--muted)]">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                enter your password to confirm you would like to permanently delete your account.') }}
+                Cette action est définitive. Toutes les données associées au compte seront supprimées.
             </p>
 
+            @if ($user->password)
             <div class="mt-6">
                 <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
 
@@ -35,6 +35,14 @@
 
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
             </div>
+            @else
+            <label class="mt-6 flex items-start gap-3 rounded-xl border border-[var(--danger)]/25 bg-[var(--danger)]/5 p-4">
+                <input type="checkbox" name="confirm_deletion" value="1"
+                    class="mt-0.5 rounded border-[var(--border)] text-[var(--danger)] focus:ring-[var(--danger)]">
+                <span class="text-sm text-[var(--text)]">Je confirme vouloir supprimer définitivement mon compte.</span>
+            </label>
+            <x-input-error :messages="$errors->userDeletion->get('confirm_deletion')" class="mt-2" />
+            @endif
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')">
