@@ -10,7 +10,7 @@ class BlogController extends Controller
     {
         $category = request('category');
         $posts = Post::published()
-            ->when($category, fn($q) => $q->where('category', $category))
+            ->when($category, fn ($q) => $q->where('category', $category))
             ->orderByDesc('published_at')
             ->paginate(9);
 

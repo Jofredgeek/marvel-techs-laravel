@@ -9,8 +9,9 @@
             {{-- Alpine filter --}}
             <div x-data="{
                 activeFilter: 'Tous',
-                filters: ['Tous', 'Web', 'Réseau', 'Security', 'Cloud', 'Mobile'],
+                filters: ['Tous', ...{{ Js::from($filters) }}],
                 projects: {{ Js::from($projects) }},
+                portfolioBase: {{ Js::from(route('portfolio.index')) }},
                 get filtered() {
                     if (this.activeFilter === 'Tous') return this.projects;
                     return this.projects.filter(p => {
@@ -31,7 +32,7 @@
                 {{-- Projects grid --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <template x-for="project in filtered" :key="project.id">
-                        <a :href="`/portfolio/${project.slug}`"
+                        <a :href="`${portfolioBase}/${encodeURIComponent(project.slug)}`"
                             class="group glass glass-hover rounded-xl overflow-hidden block">
                             <div
                                 class="h-48 bg-gradient-to-br from-[var(--primary)]/10 via-[var(--secondary)]/10 to-[var(--success)]/10 flex items-center justify-center">
@@ -53,7 +54,7 @@
                 </div>
 
                 {{-- Empty state --}}
-                <div x-show="filtered.length === 0" class="text-center py-16 text-[var(--muted)]">
+                <div x-cloak x-show="filtered.length === 0" class="text-center py-16 text-[var(--muted)]">
                     <div class="text-5xl mb-4">🔍</div>
                     <p>Aucun projet dans cette catégorie pour le moment.</p>
                 </div>

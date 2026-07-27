@@ -1,3 +1,4 @@
+@php($accountHomeRoute = Auth::user()->homeRoute())
 <nav x-data="{ open: false }" class="bg-[var(--surface)] border-b border-[var(--border)]">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -5,16 +6,17 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route($accountHomeRoute) }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-[var(--primary)]" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route($accountHomeRoute)" :active="request()->routeIs($accountHomeRoute)">
+                        {{ Auth::user()->is_admin ? 'Administration' : 'Mon espace' }}
                     </x-nav-link>
+                    <x-nav-link :href="route('home')" :active="false">Voir le site</x-nav-link>
                 </div>
             </div>
 
@@ -74,16 +76,17 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route($accountHomeRoute)" :active="request()->routeIs($accountHomeRoute)">
+                {{ Auth::user()->is_admin ? 'Administration' : 'Mon espace' }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home')" :active="false">Voir le site</x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-[var(--border)]">
             <div class="px-4">
                 <div class="font-medium text-base text-[var(--heading)]">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-[var(--muted)]">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-sm text-[var(--muted)]">{{ Auth::user()->email ?: Auth::user()->phone }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

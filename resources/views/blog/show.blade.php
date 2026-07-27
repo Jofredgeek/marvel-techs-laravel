@@ -15,7 +15,7 @@
                     <x-badge color="cyan">{{ $tag }}</x-badge>
                     @endforeach
                 </div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">{{ $post->title }}</h1>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-[var(--heading)] mb-4 leading-tight">{{ $post->title }}</h1>
                 <div class="flex items-center gap-3 text-[var(--muted)] text-sm">
                     <div
                         class="w-8 h-8 rounded-full bg-gradient-to-br from-neon-cyan to-neon-violet flex items-center justify-center text-dark-900 font-bold text-xs">
@@ -55,12 +55,12 @@
         {{-- Related --}}
         @if($relatedPosts->count())
         <div>
-            <h2 class="text-xl font-bold text-white mb-5">Articles similaires</h2>
+            <h2 class="text-xl font-bold text-[var(--heading)] mb-5">Articles similaires</h2>
             <div class="grid sm:grid-cols-2 gap-4">
                 @foreach($relatedPosts as $related)
                 <a href="{{ route('blog.show', $related->slug) }}" class="glass glass-hover rounded-xl p-4 block group">
                     <x-badge color="violet" class="mb-2">{{ $related->category }}</x-badge>
-                    <h3 class="font-semibold text-white text-sm group-hover:text-neon-cyan transition-colors mt-2">{{
+                    <h3 class="font-semibold text-[var(--heading)] text-sm group-hover:text-neon-cyan transition-colors mt-2">{{
                         $related->title }}</h3>
                 </a>
                 @endforeach

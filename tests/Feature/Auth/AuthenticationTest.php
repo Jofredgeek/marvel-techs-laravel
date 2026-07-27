@@ -27,7 +27,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('admin.dashboard', absolute: false));
+        $response->assertRedirect(route('dashboard', absolute: false));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
@@ -50,5 +50,14 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
         $response->assertRedirect('/');
+    }
+
+    public function test_login_screen_offers_all_authentication_methods(): void
+    {
+        $this->get('/login')
+            ->assertOk()
+            ->assertSee('Continuer avec Google')
+            ->assertSee('WhatsApp')
+            ->assertSee('Créer un compte');
     }
 }

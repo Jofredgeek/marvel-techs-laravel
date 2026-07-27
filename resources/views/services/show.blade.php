@@ -69,7 +69,7 @@
                         <h3 class="font-bold text-[var(--heading)] mb-2">Intéressé par ce service ?</h3>
                         <p class="text-[var(--muted)] text-sm mb-4">Obtenez un devis personnalisé en 24h. Audit initial
                             gratuit.</p>
-                        <a href="{{ route('quote') }}?service={{ $service->slug }}"
+                        <a href="{{ route('quote', ['service' => $service->title]) }}"
                             class="btn-primary w-full justify-center mb-3">Demander un devis</a>
                         <a href="{{ route('contact') }}" class="btn-outline w-full justify-center text-sm">Poser une
                             question</a>

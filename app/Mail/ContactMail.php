@@ -17,7 +17,7 @@ class ContactMail extends Mailable
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: '📩 Nouveau contact : ' . $this->contact->name . ' — ' . $this->contact->service);
+        return new Envelope(subject: '📩 Nouveau contact : '.$this->contact->name.' — '.$this->contact->service);
     }
 
     public function content(): Content

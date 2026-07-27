@@ -11,12 +11,14 @@ class AdminContactController extends Controller
     {
         $contacts = Contact::latest()->paginate(20);
         Contact::where('read', false)->update(['read' => true]);
+
         return view('admin.contacts.index', compact('contacts'));
     }
 
     public function destroy(Contact $contact)
     {
         $contact->delete();
+
         return redirect()->route('admin.contacts.index')->with('success', 'Message supprimé.');
     }
 }

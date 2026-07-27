@@ -10,19 +10,34 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
         // ─── Admin user ──────────────────────────────────────────────────────
-        User::firstOrCreate(
-        ['email' => 'admin@marveltechs.cm'],
-        [
-            'name' => 'Admin Marvel Tech\'s',
-            'password' => Hash::make('password'),
-        ]
-        );
+        $adminEmail = env('ADMIN_EMAIL', 'admin@marveltechs.cm');
+
+        $admin = User::where('email', $adminEmail)->first();
+
+        if (! $admin) {
+            $configuredPassword = env('ADMIN_PASSWORD');
+            $adminPassword = $configuredPassword ?: Str::password(24);
+
+            User::forceCreate([
+                'email' => $adminEmail,
+                'name' => 'Admin Marvel Tech\'s',
+                'password' => Hash::make($adminPassword),
+                'is_admin' => true,
+            ]);
+
+            if (! $configuredPassword) {
+                $this->command?->warn("Mot de passe admin généré : {$adminPassword}");
+            }
+        } elseif (! $admin->is_admin) {
+            $admin->forceFill(['is_admin' => true])->save();
+        }
 
         // ─── Services ────────────────────────────────────────────────────────
         $services = [

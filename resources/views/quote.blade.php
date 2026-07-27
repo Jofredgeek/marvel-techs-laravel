@@ -36,17 +36,7 @@
                     </label>
                     <select name="service" id="service" required class="form-input">
                         <option value="">— Choisir —</option>
-                        @foreach([
-                        'Maintenance & Support IT',
-                        'Réseaux & Administration Systèmes',
-                        'Développement Web & Mobile',
-                        'Cloud & DevOps',
-                        'Cybersécurité & Audit',
-                        'Installation & Déploiement',
-                        'Sauvegarde & Continuité d\'activité',
-                        'Pack complet',
-                        'Autre',
-                        ] as $s)
+                        @foreach($services->concat(['Pack complet', 'Autre'])->unique() as $s)
                         <option value="{{ $s }}" {{ old('service', request('service'))===$s ? 'selected' : '' }}>{{ $s
                             }}</option>
                         @endforeach

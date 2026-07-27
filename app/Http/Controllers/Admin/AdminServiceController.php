@@ -5,19 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class AdminServiceController extends Controller
 {
     public function index()
     {
         $services = Service::orderBy('sort_order')->paginate(15);
+
         return view('admin.services.index', compact('services'));
     }
 
     public function create()
     {
-        return view('admin.services.form', ['service' => new Service(), 'action' => 'create']);
+        return view('admin.services.form', ['service' => new Service, 'action' => 'create']);
     }
 
     public function store(Request $request)
@@ -27,16 +27,18 @@ class AdminServiceController extends Controller
             'icon' => 'nullable|string|max:10',
             'excerpt' => 'required|string|max:500',
             'content' => 'required|string',
-            'features' => 'nullable|string',
-            'technologies' => 'nullable|string',
-            'sort_order' => 'nullable|integer',
+            'features' => 'nullable|string|max:5000',
+            'technologies' => 'nullable|string|max:1000',
+            'sort_order' => 'nullable|integer|min:0',
             'active' => 'nullable|boolean',
         ]);
-        $data['slug'] = Str::slug($data['title']);
-        $data['features'] = $data['features'] ? array_filter(array_map('trim', explode("\n", $data['features']))) : null;
-        $data['technologies'] = $data['technologies'] ? array_filter(array_map('trim', explode(',', $data['technologies']))) : null;
+        $data['icon'] = $data['icon'] ?: '🔧';
+        $data['features'] = $data['features'] ? array_values(array_filter(array_map('trim', preg_split('/\R/', $data['features'])))) : null;
+        $data['technologies'] = $data['technologies'] ? array_values(array_filter(array_map('trim', explode(',', $data['technologies'])))) : null;
+        $data['sort_order'] ??= 0;
         $data['active'] = $request->has('active');
         Service::create($data);
+
         return redirect()->route('admin.services.index')->with('success', 'Service créé.');
     }
 
@@ -52,20 +54,24 @@ class AdminServiceController extends Controller
             'icon' => 'nullable|string|max:10',
             'excerpt' => 'required|string|max:500',
             'content' => 'required|string',
-            'features' => 'nullable|string',
-            'technologies' => 'nullable|string',
-            'sort_order' => 'nullable|integer',
+            'features' => 'nullable|string|max:5000',
+            'technologies' => 'nullable|string|max:1000',
+            'sort_order' => 'nullable|integer|min:0',
         ]);
-        $data['features'] = $data['features'] ? array_filter(array_map('trim', explode("\n", $data['features']))) : null;
-        $data['technologies'] = $data['technologies'] ? array_filter(array_map('trim', explode(',', $data['technologies']))) : null;
+        $data['icon'] = $data['icon'] ?: '🔧';
+        $data['features'] = $data['features'] ? array_values(array_filter(array_map('trim', preg_split('/\R/', $data['features'])))) : null;
+        $data['technologies'] = $data['technologies'] ? array_values(array_filter(array_map('trim', explode(',', $data['technologies'])))) : null;
+        $data['sort_order'] ??= 0;
         $data['active'] = $request->has('active');
         $service->update($data);
+
         return redirect()->route('admin.services.index')->with('success', 'Service mis à jour.');
     }
 
     public function destroy(Service $service)
     {
         $service->delete();
+
         return redirect()->route('admin.services.index')->with('success', 'Service supprimé.');
     }
 }

@@ -5,7 +5,7 @@
             <p class="text-[var(--muted)] text-sm">{{ $quotes->total() }} devis</p>
         </div>
     </div>
-    <div class="glass rounded-xl overflow-hidden">
+    <div class="glass rounded-xl overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="border-b border-[var(--border)]">
                 <tr class="text-[var(--muted)] text-xs uppercase tracking-wide">
@@ -33,18 +33,24 @@
                     <td class="px-5 py-3 text-[var(--muted)] text-xs">{{ Str::limit($quote->service, 35) }}</td>
                     <td class="px-5 py-3 text-[var(--muted)] text-xs">{{ $quote->budget }}</td>
                     <td class="px-5 py-3">
-                        <span
-                            class="text-xs px-2 py-0.5 rounded-full border
-                        {{ $quote->status === 'new' ? 'border-[var(--primary)]/40 text-[var(--primary)]' :
-                           ($quote->status === 'accepted' ? 'border-[var(--success)]/40 text-[var(--success)]' :
-                           ($quote->status === 'declined' ? 'border-[var(--error)]/40 text-[var(--error)]' : 'border-[var(--border)] text-[var(--muted)]')) }}">
-                            {{ $quote->status }}
-                        </span>
+                        <form method="POST" action="{{ route('admin.quotes.status', $quote) }}">
+                            @csrf
+                            @method('PATCH')
+                            <select name="status" onchange="this.form.submit()"
+                                class="form-input min-w-32 py-1.5 text-xs">
+                                <option value="new" @selected($quote->status === 'new')>Nouveau</option>
+                                <option value="in_review" @selected($quote->status === 'in_review')>En étude</option>
+                                <option value="sent" @selected($quote->status === 'sent')>Proposition envoyée</option>
+                                <option value="accepted" @selected($quote->status === 'accepted')>Accepté</option>
+                                <option value="declined" @selected($quote->status === 'declined')>Refusé</option>
+                            </select>
+                        </form>
                     </td>
                     <td class="px-5 py-3 text-[var(--muted)] text-xs">{{ $quote->created_at->format('d/m/Y') }}</td>
                     <td class="px-5 py-3 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <button onclick="this.closest('tr').querySelector('.details').classList.toggle('hidden')"
+                            <button type="button" aria-expanded="false"
+                                onclick="const row = this.closest('tr').nextElementSibling; row.classList.toggle('hidden'); this.setAttribute('aria-expanded', String(!row.classList.contains('hidden')))"
                                 class="text-[var(--primary)] text-xs hover:underline">Détails</button>
                             <form method="POST" action="{{ route('admin.quotes.destroy', $quote) }}"
                                 onsubmit="return confirm('Supprimer ce devis ?')">

@@ -4,7 +4,7 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-14">
                 <x-badge color="cyan" class="mb-4">Contact</x-badge>
-                <h1 class="text-4xl font-extrabold text-white mb-4 mt-4">Parlons de votre projet</h1>
+                <h1 class="text-4xl font-extrabold text-[var(--heading)] mb-4 mt-4">Parlons de votre projet</h1>
                 <p class="text-[var(--muted)] text-lg">Audit gratuit de 15 min · Réponse sous 24h · Sans engagement</p>
             </div>
 
@@ -38,16 +38,7 @@
                             </label>
                             <select name="service" id="service" required class="form-input">
                                 <option value="">— Choisir un service —</option>
-                                @foreach([
-                                'Maintenance & Support IT',
-                                'Réseaux & Administration Systèmes',
-                                'Développement Web & Mobile',
-                                'Cloud & DevOps',
-                                'Cybersécurité & Audit',
-                                'Installation & Déploiement',
-                                'Sauvegarde & Continuité d\'activité',
-                                'Autre',
-                                ] as $s)
+                                @foreach($services->push('Autre')->unique() as $s)
                                 <option value="{{ $s }}" {{ old('service')===$s ? 'selected' : '' }}>{{ $s }}</option>
                                 @endforeach
                             </select>
@@ -92,7 +83,7 @@
                         <div>
                             <div class="text-xs text-[var(--muted)] opacity-60 uppercase tracking-wider">{{ $label }}
                             </div>
-                            <div class="text-white font-medium text-sm">{{ $value }}</div>
+                            <div class="text-[var(--heading)] font-medium text-sm">{{ $value }}</div>
                             <div class="text-[var(--muted)] text-xs">{{ $note }}</div>
                         </div>
                     </div>

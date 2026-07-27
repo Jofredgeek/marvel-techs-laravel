@@ -11,12 +11,13 @@ class RegistrationTest extends TestCase
 
     public function test_registration_screen_can_be_rendered(): void
     {
-        $response = $this->get('/register');
-
-        $response->assertStatus(200);
+        $this->get('/register')
+            ->assertOk()
+            ->assertSee('Créez votre compte')
+            ->assertSee('Continuer avec Google');
     }
 
-    public function test_new_users_can_register(): void
+    public function test_new_users_can_register_with_email(): void
     {
         $response = $this->post('/register', [
             'name' => 'Test User',
@@ -26,6 +27,10 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('admin.dashboard', absolute: false));
+        $this->assertDatabaseHas('users', [
+            'email' => 'test@example.com',
+            'is_admin' => false,
+        ]);
+        $response->assertRedirect(route('dashboard', absolute: false));
     }
 }

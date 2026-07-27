@@ -14,7 +14,7 @@
                     <x-badge color="cyan">{{ $tag }}</x-badge>
                     @endforeach
                 </div>
-                <h1 class="text-4xl font-extrabold text-white mb-3">{{ $project->title }}</h1>
+                <h1 class="text-4xl font-extrabold text-[var(--heading)] mb-3">{{ $project->title }}</h1>
                 <div class="flex flex-wrap gap-4 text-[var(--muted)] text-sm">
                     <span>👤 Client : {{ $project->client }}</span>
                     <span>📅 Année : {{ $project->year }}</span>

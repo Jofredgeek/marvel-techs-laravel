@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-[var(--heading)]">
-            {{ __('Update Password') }}
+            {{ $user->password ? 'Modifier le mot de passe' : 'Créer un mot de passe' }}
         </h2>
 
         <p class="mt-1 text-sm text-[var(--muted)]">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            {{ $user->password ? 'Utilisez un mot de passe long et unique.' : 'Ajoutez un mot de passe pour pouvoir aussi vous connecter par e-mail.' }}
         </p>
     </header>
 
@@ -13,12 +13,14 @@
         @csrf
         @method('put')
 
+        @if ($user->password)
         <div>
             <x-input-label for="update_password_current_password" :value="__('Current Password')" />
             <x-text-input id="update_password_current_password" name="current_password" type="password"
                 class="mt-1 block w-full" autocomplete="current-password" />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
+        @endif
 
         <div>
             <x-input-label for="update_password_password" :value="__('New Password')" />

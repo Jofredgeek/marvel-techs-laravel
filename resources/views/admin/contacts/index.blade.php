@@ -5,7 +5,7 @@
             <p class="text-[var(--muted)] text-sm">{{ $contacts->total() }} message(s)</p>
         </div>
     </div>
-    <div class="glass rounded-xl overflow-hidden">
+    <div class="glass rounded-xl overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="border-b border-[var(--border)]">
                 <tr class="text-[var(--muted)] text-xs uppercase tracking-wide">
@@ -35,12 +35,22 @@
                     <td class="px-5 py-3 text-[var(--muted)] text-xs">{{ $contact->created_at->format('d/m/Y H:i') }}
                     </td>
                     <td class="px-5 py-3 text-right">
-                        <form method="POST" action="{{ route('admin.contacts.destroy', $contact) }}"
-                            onsubmit="return confirm('Supprimer ce message ?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-[var(--error)] text-xs hover:underline">Supprimer</button>
-                        </form>
+                        <div class="flex items-center justify-end gap-2">
+                            <button type="button" aria-expanded="false"
+                                onclick="const row = this.closest('tr').nextElementSibling; row.classList.toggle('hidden'); this.setAttribute('aria-expanded', String(!row.classList.contains('hidden')))"
+                                class="text-[var(--primary)] text-xs hover:underline">Détails</button>
+                            <form method="POST" action="{{ route('admin.contacts.destroy', $contact) }}"
+                                onsubmit="return confirm('Supprimer ce message ?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-[var(--error)] text-xs hover:underline">Supprimer</button>
+                            </form>
+                        </div>
                     </td>
+                </tr>
+                <tr class="details hidden bg-[var(--background)]">
+                    <td colspan="5"
+                        class="px-5 py-4 text-xs text-[var(--text)] opacity-80 leading-relaxed whitespace-pre-line">{{
+                        $contact->message }}</td>
                 </tr>
                 @empty
                 <tr>
