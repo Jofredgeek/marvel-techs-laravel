@@ -8,9 +8,13 @@
         <div class="hero-glow w-80 h-80 bg-[var(--secondary)]/12 top-1/3 -right-20"></div>
         <div class="hero-glow w-64 h-64 bg-[var(--success)]/10 bottom-20 left-1/4"></div>
 
-        {{-- Grid background --}}
-        <div class="absolute inset-0 opacity-[0.03]"
+        {{-- Grid background : défile vers le bas façon jeu d'arcade --}}
+        <div class="fx-gridflow absolute inset-0 opacity-[0.03]"
             style="background-image: linear-gradient(rgba(34,211,238,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,.5) 1px, transparent 1px); background-size: 60px 60px;">
+        </div>
+
+        {{-- Briques qui descendent, façon Brick Game --}}
+        <div id="fx-brick-game" class="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.18]">
         </div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">

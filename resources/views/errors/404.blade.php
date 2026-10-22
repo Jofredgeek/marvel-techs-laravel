@@ -17,6 +17,7 @@
 </head>
 
 <body
+    data-fx="on"
     class="min-h-screen flex flex-col items-center justify-center bg-[var(--background)] transition-colors duration-300 relative overflow-hidden">
     <div class="hero-glow w-80 h-80 bg-neon-cyan/12 -top-20 -left-20"></div>
     <div class="hero-glow w-64 h-64 bg-neon-violet/10 bottom-10 -right-10"></div>
@@ -44,6 +45,8 @@
             </div>
         </div>
     </div>
+
+    <x-floating-chat />
 </body>
 
 </html>

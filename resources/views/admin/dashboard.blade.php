@@ -94,7 +94,7 @@
             <div class="text-xl mb-1">📝</div>
             <div class="text-xs font-medium text-[var(--muted)]">Nouvel article</div>
         </a>
-        <a href="{{ home_url() }}" target="_blank"
+        <a href="{{ route('home') }}" target="_blank"
             class="glass rounded-xl p-4 text-center hover:border-[var(--warning)]/30 border border-transparent transition-colors">
             <div class="text-xl mb-1">🌐</div>
             <div class="text-xs font-medium text-[var(--muted)]">Voir le site</div>

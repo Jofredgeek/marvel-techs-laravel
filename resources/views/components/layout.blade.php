@@ -47,7 +47,7 @@
     {{ $head ?? '' }}
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col" data-fx="on">
     <x-navbar />
 
     <main class="flex-1">
@@ -55,6 +55,9 @@
     </main>
 
     <x-footer />
+
+    {{-- Widget flottant Tchat + WhatsApp --}}
+    <x-floating-chat />
 
     {{ $scripts ?? '' }}
 </body>

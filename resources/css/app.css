@@ -445,3 +445,517 @@ a:hover {
 .admin-table tr:hover td {
     background: var(--surface-2);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ⚡ FX CYBER — Spotlight, Glow & Éclairs
+   Actif UNIQUEMENT sur les pages publiques (body[data-fx="on"])
+   → l'interface admin (x-admin.layout) n'a pas data-fx : intouchée
+   ═══════════════════════════════════════════════════════════ */
+
+/* Placement des variables de suivi curseur */
+body[data-fx="on"] .glass,
+body[data-fx="on"] .glass-hover,
+body[data-fx="on"] .btn-primary,
+body[data-fx="on"] .btn-outline {
+    position: relative;
+    --mx: 50%;
+    --my: 50%;
+}
+
+/* Spotligth : halo lumineux qui suit le curseur */
+body[data-fx="on"] .glass::before,
+body[data-fx="on"] .btn-primary::before,
+body[data-fx="on"] .btn-outline::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+        240px circle at var(--mx) var(--my),
+        rgba(34, 211, 238, 0.16),
+        rgba(167, 139, 250, 0.06) 45%,
+        transparent 72%
+    );
+}
+
+/* Hover : halo + flash électrique */
+body[data-fx="on"] .glass:hover {
+    border-color: rgba(34, 211, 238, 0.45);
+    animation: fx-electric 0.6s ease-out;
+}
+
+body[data-fx="on"] .glass:hover::before {
+    opacity: 1;
+}
+
+body[data-fx="on"] .btn-primary:hover::before,
+body[data-fx="on"] .btn-outline:hover::before {
+    opacity: 1;
+}
+
+body[data-fx="on"] .btn-primary:hover,
+body[data-fx="on"] .btn-outline:hover {
+    animation: fx-button-electric 0.55s ease-out;
+}
+
+/* Liens de navigation : néon au survol */
+body[data-fx="on"] .nav-link:hover {
+    color: var(--primary);
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.7), 0 0 4px rgba(34, 211, 238, 0.5);
+}
+
+/* ─── Keyframes ─── */
+@keyframes fx-electric {
+    0% {
+        box-shadow: 0 0 0 rgba(34, 211, 238, 0);
+    }
+    10% {
+        box-shadow: 0 0 24px rgba(34, 211, 238, 0.75), 0 0 70px rgba(34, 211, 238, 0.28),
+            inset 0 0 20px rgba(34, 211, 238, 0.12);
+    }
+    15% {
+        box-shadow: 0 0 6px rgba(34, 211, 238, 0.25);
+    }
+    22% {
+        box-shadow: 0 0 28px rgba(34, 211, 238, 0.65), 0 0 80px rgba(167, 139, 250, 0.22),
+            inset 0 0 16px rgba(167, 139, 250, 0.1);
+    }
+    28% {
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 18px rgba(34, 211, 238, 0.35), 0 0 50px rgba(34, 211, 238, 0.1);
+    }
+}
+
+@keyframes fx-button-electric {
+    0% {
+        box-shadow: 0 0 0 rgba(34, 211, 238, 0);
+    }
+    12% {
+        box-shadow: 0 0 20px rgba(34, 211, 238, 0.9), 0 0 55px rgba(34, 211, 238, 0.35);
+    }
+    18% {
+        box-shadow: 0 0 4px rgba(34, 211, 238, 0.3);
+    }
+    30% {
+        box-shadow: 0 0 24px rgba(34, 211, 238, 0.75), 0 0 60px rgba(167, 139, 250, 0.3);
+    }
+    100% {
+        box-shadow: var(--glow);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ⚡ FX CURSEUR GLOBAL — Halo de lumière qui suit le curseur (page entière)
+   Créés par le JS (app.js) uniquement si body[data-fx="on"]
+   ═══════════════════════════════════════════════════════════ */
+
+/* Variables globales de position du curseur */
+body[data-fx="on"] {
+    --fx-x: 50vw;
+    --fx-y: 30vh;
+}
+
+/* Halo de lumière : suit le curseur sur TOUTE la page */
+body[data-fx="on"] #fx-page-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+        380px circle at var(--fx-x) var(--fx-y),
+        rgba(34, 211, 238, 0.13),
+        rgba(167, 139, 250, 0.06) 45%,
+        transparent 68%
+    );
+}
+
+
+
+/* Accessibilité : désactive tout si mouvement réduit demandé */
+@media (prefers-reduced-motion: reduce) {
+    body[data-fx="on"] .glass,
+    body[data-fx="on"] .btn-primary,
+    body[data-fx="on"] .btn-outline {
+        position: relative;
+    }    body[data-fx="on"] .glass::before,
+    body[data-fx="on"] .btn-primary::before,
+    body[data-fx="on"] .btn-outline::before {
+        display: none;
+    }
+
+    body[data-fx="on"] #fx-page-glow {
+        display: none;
+    }
+
+    body[data-fx="on"] .glass,
+    body[data-fx="on"] .btn-primary,
+    body[data-fx="on"] .btn-outline {
+        animation: none;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════
+   💬 WIDGET FLOTTANT — Tchat + WhatsApp (pages publiques)
+   Composant : components/floating-chat.blade.php
+   ═══════════════════════════════════════════════════════ */
+[x-cloak] {
+    display: none !important;
+}
+
+#fx-float {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+/* ─── Boutons ronds ─── */
+.fchat-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.fchat-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.fchat-btn:hover {
+    transform: scale(1.08) translateY(-2px);
+}
+
+.fchat-chat {
+    background: linear-gradient(135deg, #22d3ee, #a78bfa);
+    box-shadow: 0 4px 18px rgba(34, 211, 238, 0.4), 0 0 30px rgba(167, 139, 250, 0.2);
+    font-size: 1.35rem;
+}
+
+.fchat-chat:hover {
+    box-shadow: 0 6px 26px rgba(34, 211, 238, 0.55), 0 0 40px rgba(167, 139, 250, 0.3);
+}
+
+.fchat-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 11px;
+    height: 11px;
+    border-radius: 9999px;
+    background: #10b981;
+    border: 2px solid #fff;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.fchat-wa {
+    background: #25d366;
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+}
+
+.fchat-wa:hover {
+    box-shadow: 0 6px 26px rgba(37, 211, 102, 0.65);
+}
+
+/* ─── Panneau tchat ─── */
+.fchat-panel {
+    width: 340px;
+    max-width: calc(100vw - 2.5rem);
+    background: var(--surface);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), var(--glow);
+    display: flex;
+    flex-direction: column;
+    max-height: min(520px, calc(100vh - 8rem));
+}
+
+.fchat-head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.875rem 1rem;
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(167, 139, 250, 0.12));
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.fchat-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #22d3ee, #a78bfa);
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.5);
+    flex-shrink: 0;
+}
+
+.fchat-head strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--heading);
+}
+
+.fchat-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+}
+
+.fchat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--success);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.fchat-close {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--muted);
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.fchat-close:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.fchat-body {
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.fchat-bubble {
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 92%;
+    animation: fade-in 0.3s ease-out both;
+}
+
+.fchat-bot {
+    align-self: flex-start;
+    background: var(--surface-2);
+    border: 1px solid var(--glass-border);
+    border-bottom-left-radius: 0.25rem;
+    color: var(--text);
+}
+
+.fchat-user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #22d3ee, #a78bfa);
+    color: var(--primary-foreground);
+    border-bottom-right-radius: 0.25rem;
+}
+
+.fchat-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.fchat-actions a {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 9999px;
+    border: 1px solid var(--ring);
+    color: var(--primary);
+    background: rgba(34, 211, 238, 0.06);
+    transition: background 0.2s ease;
+}
+
+.fchat-actions a:hover {
+    background: rgba(34, 211, 238, 0.16);
+}
+
+.fchat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fchat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.fchat-row .form-input {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.7rem;
+}
+
+.fchat-form textarea.form-input {
+    font-size: 0.85rem;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.fchat-send {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.fchat-send:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Honeypot invisible pour les bots */
+.fchat-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    border: 0;
+    padding: 0;
+}
+
+/* Transitions Alpine du panneau */
+.fchat-transition {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.fchat-hidden {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+    pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   🕹️ FX BRICK GAME — fond de la hero en jeu d'arcade
+   Grille qui défile vers le bas + briques néon qui tombent
+   (page d'accueil uniquement, body[data-fx="on"])
+   ═══════════════════════════════════════════════════════ */
+
+/* La grille défile d'une cellule (60px) par cycle — boucle seamless */
+.fx-gridflow {
+    animation: fx-grid-descend 2.8s linear infinite;
+}
+
+@keyframes fx-grid-descend {
+    from {
+        background-position: 0 0, 0 0;
+    }
+    to {
+        background-position: 0 60px, 0 60px;
+    }
+}
+
+/* Briques : rectangles néon alignés sur la grille, qui tombent droits */
+.fx-brick {
+    position: absolute;
+    top: -90px;
+    border-radius: 2px;
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+        0 0 14px rgba(34, 211, 238, 0.45);
+    animation: fx-brick-fall var(--b-dur, 12s) linear forwards;
+}
+
+.fx-brick-c {
+    background: #22d3ee;
+}
+
+.fx-brick-v {
+    background: #a78bfa;
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+        0 0 14px rgba(167, 139, 250, 0.45);
+}
+
+.fx-brick-e {
+    background: #34d399;
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+        0 0 14px rgba(52, 211, 153, 0.45);
+}
+
+.fx-brick-a {
+    background: #fbbf24;
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+        0 0 14px rgba(251, 191, 36, 0.4);
+}
+
+@keyframes fx-brick-fall {
+    to {
+        transform: translateY(calc(100vh + 220px));
+    }
+}
+
+/* Petites étincelles quand une brique "passe une ligne" (effet pixel) */
+.fx-brick::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    background: rgba(255, 255, 255, 0.14);
+    clip-path: polygon(0 0, 55% 0, 55% 100%, 0 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-gridflow {
+        animation: none;
+    }
+
+    .fx-brick {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    #fx-float {
+        bottom: 1rem;
+    }
+
+    .fchat-panel {
+        width: calc(100vw - 2rem);
+        max-height: min(460px, calc(100vh - 7rem));
+    }
+}

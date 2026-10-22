@@ -27,7 +27,7 @@
     </script>
 </head>
 
-<body class="font-sans text-[var(--text)] antialiased">
+<body class="font-sans text-[var(--text)] antialiased" data-fx="on">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-[var(--background)]">
         <div>
             <a href="/">
@@ -40,6 +40,8 @@
             {{ $slot }}
         </div>
     </div>
+
+    <x-floating-chat />
 </body>
 
 </html>
