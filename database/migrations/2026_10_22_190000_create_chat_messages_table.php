@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('chat_messages', function (Blueprint $table) {
+            $table->id();
+            $table->string('session_id', 64)->index();
+            $table->string('role', 20); // user | assistant
+            $table->text('content');
+            $table->unsignedTinyInteger('sentiment')->nullable(); // réservé
+            $table->timestamps();
+
+            $table->index(['session_id', 'created_at']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('chat_messages');
+    }
+};

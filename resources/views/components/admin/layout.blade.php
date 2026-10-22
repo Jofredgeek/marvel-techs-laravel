@@ -85,6 +85,18 @@
                 </svg>
                 Devis
             </a>
+            <a href="{{ route('admin.chats.index') }}"
+                class="admin-sidebar-link {{ request()->routeIs('admin.chats*') ? 'active' : '' }}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 21l1.33-4.03A8.34 8.34 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                Chats IA
+                @php $chatCount = \App\Models\ChatMessage::query()->distinct('session_id')->count('session_id'); @endphp
+                @if ($chatCount > 0)
+                    <span class="badge badge-cyan ml-auto">{{ $chatCount }}</span>
+                @endif
+            </a>
         </nav>
 
         <div class="p-4 border-t border-[var(--border)]">

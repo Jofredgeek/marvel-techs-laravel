@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // API IA (OpenAI-compatible) utilisée par le chatbot du widget flottant.
+    // La clé ne quitte jamais le serveur — voir .env : OPENAI_API_KEY.
+    'ai' => [
+        'key' => env('OPENAI_API_KEY'),
+        'base_url' => env('AI_BASE_URL', 'https://freebuff.com/api/v1/paid'),
+        'model' => env('AI_MODEL', 'claude-haiku-5-5'),
+    ],
+
 ];

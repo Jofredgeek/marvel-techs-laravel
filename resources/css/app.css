@@ -845,6 +845,95 @@ body[data-fx="on"] #fx-page-glow {
     cursor: wait;
 }
 
+/* ── Chat IA ── */
+.fchat-ai-row {
+    grid-template-columns: 1fr auto;
+}
+
+.fchat-send-ai {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 9999px;
+    border: 1px solid var(--ring);
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.9), rgba(139, 92, 246, 0.9));
+    color: #04121a;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.1s ease;
+}
+
+.fchat-send-ai:hover {
+    filter: brightness(1.15);
+}
+
+.fchat-send-ai:active {
+    transform: scale(0.94);
+}
+
+.fchat-send-ai:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* Bulles "en train d'écrire" de l'assistant */
+.fchat-typing {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.65rem 0.8rem;
+}
+
+.fchat-typing span {
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    opacity: 0.35;
+    animation: fchat-typing 1.2s infinite ease-in-out;
+}
+
+.fchat-typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.fchat-typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fchat-typing {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.35;
+    }
+
+    30% {
+        transform: translateY(-3px);
+        opacity: 1;
+    }
+}
+
+.fchat-switch-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.72rem;
+    color: var(--primary);
+    cursor: pointer;
+    text-align: left;
+    opacity: 0.85;
+}
+
+.fchat-switch-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
 /* Honeypot invisible pour les bots */
 .fchat-honeypot {
     position: absolute;

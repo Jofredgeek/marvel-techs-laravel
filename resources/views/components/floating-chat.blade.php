@@ -1,8 +1,9 @@
 {{-- ═══════════════════════════════════════════════════════════════
-     Widget flottant : Tchat (→ boîte de réception admin via /contact)
-     + bouton WhatsApp — pages publiques uniquement
-     ⚠️ Définir WHATSAPP_NUMBER dans le .env avec le vrai numéro
-        (format international sans + ni espaces, ex : 237699123456)
+     Widget flottant : Tchat IA (bot ⚡ répond via POST /api/chat,
+     conversations sauvegardées) + bascule "laisser un message" (→
+     /contact, boîte de réception admin) + bouton WhatsApp
+     — pages publiques uniquement.
+     ⚠️ Définir WHATSAPP_NUMBER dans le .env avec le vrai numéro.
      ═══════════════════════════════════════════════════════════════ --}}
 @php
 $whatsapp = preg_replace('/[^0-9]/', '', env('WHATSAPP_NUMBER', ''));
@@ -21,7 +22,7 @@ $waText = rawurlencode("Bonjour Marvel Tech's ! J'aimerais discuter d'un projet 
             <div>
                 <strong>Tchat Marvel Tech's</strong>
                 <span class="fchat-status">
-                    <span class="fchat-dot"></span> En ligne · Réponse sous 24h
+                    <span class="fchat-dot"></span> Assistant IA · Techniciens sous 24h
                 </span>
             </div>
             <button type="button" class="fchat-close" aria-label="Fermer le tchat" @click="open = false">✕</button>
@@ -29,17 +30,30 @@ $waText = rawurlencode("Bonjour Marvel Tech's ! J'aimerais discuter d'un projet 
 
         <div class="fchat-body" id="fchat-msgs">
             <div class="fchat-bubble fchat-bot">
-                👋 Bonjour ! Comment pouvons-nous vous aider ?
-                Laissez vos coordonnées dans le formulaire, ou choisissez une action rapide.
-            </div>
-            <div class="fchat-actions">
-                <a href="{{ route('quote') }}">📝 Demander un devis</a>
-                <a href="{{ route('services.index') }}">🛠️ Voir les services</a>
-                <a href="{{ route('contact') }}">📩 Formulaire complet</a>
+                👋 Bonjour ! Je suis l'assistant Marvel Tech's, tapez votre question et
+                je réponds tout de suite. Pour joindre un technicien, il y a une section
+                dédiée juste en dessous ⬇️
             </div>
 
-            {{-- mini-formulaire → /contact (boîte de réception admin) --}}
-            <form id="fchat-form" class="fchat-form">
+            <div class="fchat-actions" id="fchat-quick-actions">
+                <a href="{{ route('quote') }}">📝 Demander un devis</a>
+                <a href="{{ route('services.index') }}">🛠️ Voir les services</a>
+                <a href="#" id="fchat-mode-form">📩 Laisser un message</a>
+            </div>
+
+            {{-- Chat IA : champ de saisie (visible par défaut) --}}
+            <form id="fchat-ai-form" class="fchat-form">
+                <div class="fchat-row fchat-ai-row">
+                    <input type="text" name="aimessage" id="fchat-ai-input" required maxlength="1000"
+                        placeholder="Posez votre question…" class="form-input" autocomplete="off">
+                    <button type="submit" class="fchat-send-ai" id="fchat-ai-send" aria-label="Envoyer">➤</button>
+                </div>
+                <button type="button" id="fchat-mode-ai"
+                    class="fchat-switch-link hidden">💬 Revenir à l'assistant IA</button>
+            </form>
+
+            {{-- mini-formulaire → /contact (boîte de réception admin), masqué par défaut --}}
+            <form id="fchat-form" class="fchat-form hidden">
                 <input type="text" name="website" class="fchat-honeypot" tabindex="-1" autocomplete="off">
                 <div class="fchat-row">
                     <input type="text" name="name" id="fchat-name" placeholder="Votre nom" required maxlength="150"
@@ -50,6 +64,8 @@ $waText = rawurlencode("Bonjour Marvel Tech's ! J'aimerais discuter d'un projet 
                 <textarea name="message" id="fchat-message" rows="3" required maxlength="3000"
                     placeholder="Décrivez votre besoin (min. 20 caractères)…" class="form-input"></textarea>
                 <button type="submit" class="btn-primary fchat-send">Envoyer le message 🚀</button>
+                <button type="button" id="fchat-back-ai"
+                    class="fchat-switch-link">💬 Revenir à l'assistant IA</button>
             </form>
         </div>
     </div>
@@ -76,10 +92,29 @@ $waText = rawurlencode("Bonjour Marvel Tech's ! J'aimerais discuter d'un projet 
 <script>
     (function () {
         const meta = document.querySelector('meta[name="csrf-token"]');
-        const form = document.getElementById('fchat-form');
         const msgs = document.getElementById('fchat-msgs');
-        if (!meta || !form) return;
+        const aiForm = document.getElementById('fchat-ai-form');
+        const aiInput = document.getElementById('fchat-ai-input');
+        const aiSend = document.getElementById('fchat-ai-send');
+        const msgForm = document.getElementById('fchat-form');
+        const quickActions = document.getElementById('fchat-quick-actions');
+        const modeForm = document.getElementById('fchat-mode-form');
+        const modeAi = document.getElementById('fchat-mode-ai');
+        const backAi = document.getElementById('fchat-back-ai');
+        if (!meta || !aiForm) return;
         const csrf = meta.getAttribute('content');
+
+        // Session persistante (l'historique réel vit dans la BDD côté serveur)
+        // → même conversation retrouvée si le visiteur ferme/rouvre le widget
+        let sessionId = null;
+        try {
+            sessionId = localStorage.getItem('fchat_session');
+        } catch (e) { /* localStorage indisponible (mode privé) */ }
+        if (!sessionId) {
+            sessionId = 'w-' + (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+            try { localStorage.setItem('fchat_session', sessionId); } catch (e) { /* no-op */ }
+        }
+        let exchangeCount = 0;
 
         function addBubble(text, kind) {
             const div = document.createElement('div');
@@ -90,18 +125,90 @@ $waText = rawurlencode("Bonjour Marvel Tech's ! J'aimerais discuter d'un projet 
             return div;
         }
 
-        form.addEventListener('submit', (e) => {
+        function bubbleTyping() {
+            const div = document.createElement('div');
+            div.className = 'fchat-bubble fchat-bot fchat-typing';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+            return div;
+        }
+
+        // ── Bascule de mode : IA (par défaut) ↔ formulaire "technicien" ──
+        function showForm() {
+            aiForm.classList.add('hidden');
+            msgForm.classList.remove('hidden');
+            quickActions.classList.add('hidden');
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+        function showAi() {
+            msgForm.classList.add('hidden');
+            aiForm.classList.remove('hidden');
+            quickActions.classList.remove('hidden');
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+        modeForm.addEventListener('click', (e) => { e.preventDefault(); addBubble('📩 Rédigez votre message au technicien ci-dessous 👇 (email + message)', 'fchat-user'); showForm(); });
+        modeAi.addEventListener('click', () => showAi());
+        backAi.addEventListener('click', () => showAi());
+
+        // ── Chat IA ──
+        let aiBusy = false;
+        aiForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const name = form.name.value.trim();
-            const email = form.email.value.trim();
-            const message = form.message.value.trim();
+            const text = aiInput.value.trim();
+            if (!text || aiBusy) return;
+            if (text.length < 2) { addBubble('⚡ Écrivez au moins un mot 🙂', 'fchat-bot'); return; }
+
+            aiBusy = true;
+            aiInput.value = '';
+            aiSend.disabled = true;
+            addBubble(text, 'fchat-user');
+            const typing = bubbleTyping();
+
+            fetch('{{ route("chat.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ session_id: sessionId, message: text })
+            }).then((resp) => resp.json().then((data) => ({ ok: resp.ok, data })))
+                .then(({ ok, data }) => {
+                    typing.remove();
+                    if (ok && data.reply) {
+                        addBubble(data.reply, 'fchat-bot');
+                        exchangeCount++;
+                        // Au bout de 4 échanges, une seule fois, proposer le message technicien
+                        if (exchangeCount === 4 && quickActions && !quickActions.classList.contains('hidden')) {
+                            addBubble('💡 Besoin d\'un vrai technicien ? Cliquez sur « Laisser un message » et on vous répond sous 24h.', 'fchat-bot');
+                        }
+                    } else {
+                        addBubble("⚠️ L'assistant est momentanément indisponible — utilisez « 📩 Laisser un message » ci-dessus, un technicien vous répond sous 24h.", 'fchat-bot');
+                    }
+                }).catch(() => {
+                    typing.remove();
+                    addBubble("❌ Connexion perdue avec l'assistant. Réessayez ou utilisez « 📩 Laisser un message ».", 'fchat-bot');
+                }).finally(() => {
+                    aiBusy = false;
+                    aiSend.disabled = false;
+                });
+        });
+
+        // ── Message au technicien : envoi réel vers /contact (boîte admin) ──
+        msgForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = msgForm.name.value.trim();
+            const email = msgForm.email.value.trim();
+            const message = msgForm.message.value.trim();
 
             if (message.length < 20) {
                 addBubble('⚠️ Votre message doit contenir au moins 20 caractères.', 'fchat-bot');
                 return;
             }
 
-            const sendBtn = form.querySelector('.fchat-send');
+            const sendBtn = msgForm.querySelector('.fchat-send');
             const original = sendBtn.textContent;
             sendBtn.disabled = true;
             sendBtn.textContent = 'Envoi en cours…';
@@ -123,7 +230,7 @@ $waText = rawurlencode("Bonjour Marvel Tech's ! J'aimerais discuter d'un projet 
                     message: message
                 })
             }).then((resp) => {
-                form.reset();
+                msgForm.reset();
                 sendBtn.disabled = false;
                 sendBtn.textContent = original;
                 if (resp.ok) {

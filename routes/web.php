@@ -6,6 +6,8 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\ChatBotController;
+use App\Http\Controllers\Admin\AdminChatController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminServiceController;
@@ -38,6 +40,7 @@ Route::prefix('blog')->name('blog.')->group(function () {
 Route::get('/contact', [ContactController::class , 'create'])->name('contact');
 Route::post('/contact', [ContactController::class , 'store'])->name('contact.store');
 
+Route::post('/api/chat', [ChatBotController::class , 'store'])->name('chat.store')->middleware('throttle:10,1');
 Route::get('/devis', [QuoteController::class , 'create'])->name('quote');
 Route::post('/devis', [QuoteController::class , 'store'])->name('quote.store');
 
@@ -81,6 +84,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Contacts
     Route::get('contacts', [AdminContactController::class , 'index'])->name('contacts.index');
     Route::delete('contacts/{contact}', [AdminContactController::class , 'destroy'])->name('contacts.destroy');
+    Route::get('chats', [AdminChatController::class , 'index'])->name('chats.index');
+    Route::delete('chats/{sessionId}', [AdminChatController::class , 'destroy'])->name('chats.destroy');
 
     // Quotes
     Route::get('quotes', [AdminQuoteController::class , 'index'])->name('quotes.index');
